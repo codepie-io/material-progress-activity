@@ -1,0 +1,149 @@
+@import "../mixins/mixins";
+@import "../variables/variables";
+
+// ==========  Progress n activity   ========== //
+
+.md-progress {
+  display: none;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  height:3px;
+  transition: transform 0.2s linear;
+  will-change: transform;
+  transform-origin: bottom center;
+  transform: scale(1,0);
+
+  &__auxbar, &__progressbar, &__bufferbar {
+    display: block;
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 0;
+    transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+  }
+
+  &__progressbar {
+    background-color: unquote("rgb(#{$color-primary})");
+    z-index: 2;
+  }
+
+  &__bufferbar {
+    background-color: unquote("rgb(#{$color-primary-hue-3})");
+    z-index: 1;
+    width: 100%;
+  }
+
+  &__auxbar {
+    z-index:0;
+    right: 0;
+    left:auto;
+    background-color: unquote("rgb(#{$color-primary-hue-1})");
+    background-image: linear-gradient(to right, rgba(255,255,255, 0.7), rgba(255,255,255, 0.7)), linear-gradient(to right, unquote("rgb(#{$color-primary-hue-1})"), unquote("rgb(#{$color-primary-hue-1})"));
+    -webkit-mask: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjxzdmcgd2lkdGg9IjEyIiBoZWlnaHQ9IjQiIHZpZXdQb3J0PSIwIDAgMTIgNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxlbGxpcHNlIGN4PSIyIiBjeT0iMiIgcng9IjIiIHJ5PSIyIj4KICAgIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9ImN4IiBmcm9tPSIyIiB0bz0iLTEwIiBkdXI9IjAuNnMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiAvPgogIDwvZWxsaXBzZT4KICA8ZWxsaXBzZSBjeD0iMTQiIGN5PSIyIiByeD0iMiIgcnk9IjIiIGNsYXNzPSJsb2FkZXIiPgogICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iY3giIGZyb209IjE0IiB0bz0iMiIgZHVyPSIwLjZzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICA8L2VsbGlwc2U+Cjwvc3ZnPgo=");
+    mask: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjxzdmcgd2lkdGg9IjEyIiBoZWlnaHQ9IjQiIHZpZXdQb3J0PSIwIDAgMTIgNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxlbGxpcHNlIGN4PSIyIiBjeT0iMiIgcng9IjIiIHJ5PSIyIj4KICAgIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9ImN4IiBmcm9tPSIyIiB0bz0iLTEwIiBkdXI9IjAuNnMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiAvPgogIDwvZWxsaXBzZT4KICA8ZWxsaXBzZSBjeD0iMTQiIGN5PSIyIiByeD0iMiIgcnk9IjIiIGNsYXNzPSJsb2FkZXIiPgogICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iY3giIGZyb209IjE0IiB0bz0iMiIgZHVyPSIwLjZzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICA8L2VsbGlwc2U+Cjwvc3ZnPgo=");
+    animation-name: buffer;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    display: none;
+  }
+
+  &--visible{
+    transform: scale(1,1);
+  }
+
+  &--active{
+    display: block;
+  }
+
+  &--indeterminate{
+    .md-progress__progressbar{
+      animation-name: indeterminate1;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+  }
+
+  &--buffer{
+    .md-progress__auxbar{
+      display: block;
+      width: 100%;
+    }
+    .md-progress__bufferbar{
+      display: inline-block;
+      width: auto;
+    }
+  }
+
+  &--origin-top{
+    transform-origin: top center;
+  }
+
+  &--origin-center{
+    transform-origin: center center;
+  }
+
+}
+
+.layout-block{
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height: auto;
+  display: none;
+  z-index: 999;
+
+  &--center{
+    justify-content: center;
+    align-items: center;
+  }
+
+  &--fixed{
+    position: fixed;
+    top:0;
+    left: 0;
+    width:100vw
+  }
+
+  &--overlay{
+    height: 100%;
+  }
+
+  &--visible{
+    display: flex;
+  }
+}
+
+@keyframes indeterminate1 {
+  0% {
+    left: 0;
+    width: 0;
+  }
+  50% {
+    left: 25%;
+    width: 75%;
+  }
+  75% {
+    left: 100%;
+    width: 0;
+  }
+}
+@keyframes buffer {
+  0% {
+    transform: scale(1,1)
+  }
+  40% {
+    transform: scale(1,1)
+  }
+  50% {
+    transform: scale(1,0) }
+  60% {
+    transform: scale(1,1) }
+  100% {
+    transform: scale(1,1) }
+}

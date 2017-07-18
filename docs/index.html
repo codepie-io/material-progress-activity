@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Progress & Activity | Material Design | CodeArtisan</title>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Progress & Activity">
+    <meta name="theme-color" content="#4caf50">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Navigation Drawer">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#43a047">
+
+    <!-- Tile icon for Win8 -->
+    <meta name="msapplication-TileColor" content="#4caf50">
+    <meta name="msapplication-navbutton-color" content="#43a047">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Material+Icons' rel='stylesheet' type='text/css'>
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/progress.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    <link href="vendor/highlight/styles/vs.css" rel="stylesheet">
+</head>
+<body class="has-fixed-header md-layout md-layout--column md-align md-align--center-center" style="min-height: 100vh">
+<header class="md-header md-header--primary is-fixed is-casting-shadow md-header--has-menu-button">
+    <a class="md-header__menu-button md-button--icon" href="javascript:;" data-toggle="drawer" data-target="#drawer-1">
+        <i class="material-icons">menu</i>
+    </a>
+    <div class="md-header__row">
+        <div class="md-header__title layout-m-l-3"> Progress & Activity </div>
+        <div class="md-layout-spacer"></div>
+    </div>
+</header>
+<div style="height: 20vh;"></div>
+<section style="width: 100%">
+    <div class="md-container md-container--box-narrow">
+        <div class="md-row">
+            <div class="md-col md-col--12">
+
+                <div class="md-typography--headline">
+                    indeterminate
+                </div>
+                <button onclick="show('#progress-1')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Show
+                </button>
+                <button onclick="increaseBuffer('#progress-1')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Increase Buffer
+                </button>
+                <button onclick="hide('#progress-1')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Hide
+                </button>
+
+                <div>
+                    <div style="position: relative">
+                        <div class="layout-block" id="parent-1">
+                            <div class="md-progress md-progress--origin-top" data-type="indeterminate" data-target="#parent-1" data-parent="true" id="progress-1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md-col md-col--12">
+
+                <div class="md-typography--headline">
+                    Determinate
+                </div>
+                <button onclick="show('#progress-2')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Show
+                </button>
+                <button onclick="increaseBuffer('#progress-2')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Increase Buffer
+                </button>
+                <button onclick="hide('#progress-2')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Hide
+                </button>
+                <div>
+                    <div style="position: relative">
+                        <div class="layout-block" id="parent-2">
+                            <div class="md-progress md-progress--origin-top" data-type="determinate" data-target="#parent-2" data-parent="true" id="progress-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md-col md-col--12">
+
+                <div class="md-typography--headline">
+                    Buffer
+                </div>
+                <button onclick="show('#progress-3')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Show
+                </button>
+                <button onclick="increaseBuffer('#progress-3')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Increase Buffer
+                </button>
+                <button onclick="hide('#progress-3')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Hide
+                </button>
+                <div class="layout-m-b-3">
+                    <div style="position: relative">
+                        <div class="layout-block" id="parent-3">
+                            <div class="md-progress md-progress--origin-top" data-type="buffer" data-target="#parent-3" data-parent="true" id="progress-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="js/jquery.js"></script>
+<script src="../resources/assets/js/progress.js"></script>
+<script>
+    var m = 10;
+    function show(el){
+        $(el).MaterialProgress('show');
+    }
+    function increaseBuffer(el){
+        m = m+10;
+        $(el).MaterialProgress('setProgressBar', m);
+        $(el).MaterialProgress('setBufferBar', Math.min(m+20,100));
+    }
+    function hide(el){
+        m = 0
+        $(el).MaterialProgress('hide');
+    }
+</script>
+</body>
+</html>
