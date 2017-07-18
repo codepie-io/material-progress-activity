@@ -26,24 +26,34 @@
     MaterialProgress.prototype.Classes_ = {
       IS_ACTIVE: 'md-progress--active',
       IS_VISIBLE: 'md-progress--visible',
+      IS_CIRCLE: 'md-progress--circle',
       INDETERMINATE: 'md-progress--indeterminate',
       PROGRESS_BAR: 'md-progress__progressbar',
       BUFFER_BAR: 'md-progress__bufferbar',
       BUFFER: 'md-progress--buffer',
       AUX_BAR: 'md-progress__auxbar',
       PARENT_OVERLAY: 'layout-block--overlay',
-      PARENT_VISIBLE: 'layout-block--visible'
+      PARENT_CENTER: 'layout-block--center',
+      PARENT_VISIBLE: 'layout-block--visible',
+      PARENT_FIXED: 'layout-block--fixed'
     }
 
     MaterialProgress.prototype.init_ = function (config) {
       this.config = $.extend({}, this.Default, config)
-
-      var progressbar = $( "<div></div>")
-      progressbar.addClass(this.Classes_.PROGRESS_BAR).appendTo(this.$progress.get(0))
-      this.$progressBar = this.$progress.find('.'+this.Classes_.PROGRESS_BAR)
-      var bufferbar = $( "<div></div>")
-      bufferbar.addClass(this.Classes_.BUFFER_BAR).appendTo(this.$progress.get(0))
-      this.$bufferBar = this.$progress.find('.'+this.Classes_.BUFFER_BAR)
+      if(!this.config.circle){
+        var progressbar = $( "<div></div>")
+        progressbar.addClass(this.Classes_.PROGRESS_BAR).appendTo(this.$progress.get(0))
+        this.$progressBar = this.$progress.find('.'+this.Classes_.PROGRESS_BAR)
+        var bufferbar = $( "<div></div>")
+        bufferbar.addClass(this.Classes_.BUFFER_BAR).appendTo(this.$progress.get(0))
+        this.$bufferBar = this.$progress.find('.'+this.Classes_.BUFFER_BAR)
+      }else{
+        let circleSvg = '<svg class="md-loader-spinner md-loader-spinner--primary" width="55px" height="55px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">'+
+            '<circle class="md-loader-spinner__path" fill="none" stroke-width="4" stroke-linecap="round" cx="28" cy="28" r="26"></circle>'+
+            '</svg>';
+        this.$progress.get(0).innerHTML = circleSvg;
+        this.$progress.addClass(this.Classes_.IS_CIRCLE)
+      }
       this.setProgressType_()
       this.setParent_()
     }
@@ -54,29 +64,43 @@
       type: 'determinate', // indeterminate , buffer
       circle: false,
       overlay: false,
-      parent: true
+      parent: false,
+      center: false,
+      fixed: false
     }
 
     MaterialProgress.prototype.setProgressType_ = function(){
-      switch (this.config.type){
-        case 'indeterminate':
-          this.$progress.addClass(this.Classes_.INDETERMINATE)
-          this.indeterminate = true
-          break;
-        case 'buffer':
-          this.$progress.addClass(this.Classes_.BUFFER)
-          var auxbar = $( "<div></div>")
-          this.buffer = true
-          auxbar.addClass(this.Classes_.AUX_BAR).appendTo(this.$progress.get(0))
-          break
-        default:
-          this.determinate = true
-          break
+      if(this.config.circle){
+        switch (this.config.type){
+          case 'indeterminate':
+            this.$progress.addClass(this.Classes_.INDETERMINATE)
+            this.indeterminate = true
+            break;
+          default:
+            this.determinate = true
+            break
+        }
+      }else{
+        switch (this.config.type){
+          case 'indeterminate':
+            this.$progress.addClass(this.Classes_.INDETERMINATE)
+            this.indeterminate = true
+            break;
+          case 'buffer':
+            this.$progress.addClass(this.Classes_.BUFFER)
+            var auxbar = $( "<div></div>")
+            this.buffer = true
+            auxbar.addClass(this.Classes_.AUX_BAR).appendTo(this.$progress.get(0))
+            break
+          default:
+            this.determinate = true
+            break
+        }
       }
     }
 
     MaterialProgress.prototype.setProgressBar = function(val){
-      if(this.config.type == 'indeterminate' )
+      if(this.config.type == 'indeterminate')
           return ;
       if(!isNaN(val) && val >= 0){
         this.$progressBar.css('width', Math.min(val, 100)+'%');
@@ -106,6 +130,12 @@
           this.$parentTarget = parentTarget
           if(this.config.overlay){
             this.$parentTarget.addClass(this.Classes_.PARENT_OVERLAY)
+          }
+          if(this.config.center){
+            this.$parentTarget.addClass(this.Classes_.PARENT_CENTER)
+          }
+          if(this.config.fixed){
+            this.$parentTarget.addClass(this.Classes_.PARENT_FIXED)
           }
         }
       }

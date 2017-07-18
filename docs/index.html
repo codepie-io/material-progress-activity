@@ -28,6 +28,7 @@
     <link href="css/app.css" rel="stylesheet">
     <link href="css/progress.css" rel="stylesheet">
     <link href="css/docs.css" rel="stylesheet">
+    <link href="css/current.css" rel="stylesheet">
     <link href="vendor/highlight/styles/vs.css" rel="stylesheet">
 </head>
 <body class="has-fixed-header md-layout md-layout--column md-align md-align--center-center" style="min-height: 100vh">
@@ -116,6 +117,25 @@
                     </div>
                 </div>
             </div>
+
+            <div class="md-col md-col--12">
+                <div class="md-typography--headline">
+                    Circle
+                </div>
+                <button onclick="show('#progress-4')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Show
+                </button>
+                <button onclick="increaseBuffer('#progress-4')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Increase Buffer
+                </button>
+                <button onclick="hide('#progress-4')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Hide
+                </button>
+                <div class="layout-block" id="parent-4">
+                    <div class="md-progress" data-circle="true" data-overlay="true" data-center="true" data-fixed="true" data-parent="true" data-target="#parent-4" id="progress-4">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -137,5 +157,52 @@
         $(el).MaterialProgress('hide');
     }
 </script>
+<style>
+    .default-body{
+        font-size: 14px;
+        width: 100%;
+        margin: 100px auto;
+    }
+    .default-body > div{
+        font-size: 20px;
+        margin-bottom: 8px
+    }
+    .md-chips .md-chip{
+        margin-top: 0;
+    }
+    .md-loader{
+        top:0;
+        left: 0;
+    }
+    .md-loader__backface{
+        background-color: #fff;
+        opacity: .54;
+    }
+    .pos-rel{
+        position: relative;
+    }
+    .z-lower{
+        z-index: 0;
+        position: relative;
+    }
+    .z-upper{
+        z-index: 2;
+    }
+    .md-loader__backface{
+        z-index: 2;
+    }
+    .md-loader__surface{
+        z-index: 3;
+    }
+    .md-loader--visible{
+        cursor: wait;
+    }
+    .md-panel__body{
+        min-height: 400px;
+    }
+    .md-table__cell-wrapper .md-button--icon{
+        opacity: .84;
+    }
+</style>
 </body>
 </html>

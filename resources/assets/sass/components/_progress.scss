@@ -87,6 +87,13 @@
     transform-origin: center center;
   }
 
+  &--circle{
+    height: auto;
+    display: inline-block;
+    width: auto;
+    transform: scale(1,1);
+  }
+
 }
 
 .layout-block{
