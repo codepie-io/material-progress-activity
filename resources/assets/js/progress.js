@@ -72,7 +72,7 @@
         }
       }
       this.setProgressType_()
-      if(!(this.config.circle && this.config.integration))
+      if(!this.config.integration)
       this.setParent_()
     }
 
@@ -230,9 +230,17 @@
 
 
     MaterialProgress.prototype.reset = function () {
-      this.$progressBar.css('width','')
-      if(this.buffer){
-        this.$bufferBar.css('width','')
+      if(!this.config.circle){
+        this.$progressBar.css('width','')
+        if(this.buffer){
+          this.$bufferBar.css('width','')
+        }
+      } else{
+        if(this.config.integration){
+          this.circle.style.transform = '';
+          this.circlePath.style.strokeDasharray = this.strokeDasharray
+          this.circlePath.style.strokeDashoffset = this.strokeDashoffset
+        }
       }
     }
 
@@ -242,7 +250,7 @@
       this.strokeDasharray = 166
       this.strokeDashoffset = 166
 
-      if(this.config.parent){
+      if(this.config.parent && this.config.integration){
         let parentTarget = $(this.config.target)
         if(parentTarget.length){
           this.$parentTarget = parentTarget
