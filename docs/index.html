@@ -28,7 +28,6 @@
     <link href="css/app.css" rel="stylesheet">
     <link href="css/progress.css" rel="stylesheet">
     <link href="css/docs.css" rel="stylesheet">
-    <link href="css/current.css" rel="stylesheet">
     <link href="vendor/highlight/styles/vs.css" rel="stylesheet">
 </head>
 <body class="has-fixed-header md-layout md-layout--column md-align md-align--center-center" style="min-height: 100vh">
@@ -132,13 +131,33 @@
                     Hide
                 </button>
                 <div class="layout-block" id="parent-4">
-                    <div class="md-progress" data-circle="true" data-overlay="true" data-center="true" data-fixed="true" data-parent="true" data-target="#parent-4" id="progress-4">
+                    <div class="md-progress" data-type="indeterminate" data-theme="primary" data-circle="true" data-overlay="true" data-center="true" data-fixed="true" data-parent="true" data-target="#parent-4" id="progress-4">
                     </div>
+                </div>
+            </div>
+
+            <div class="md-col md-col--12">
+                <div class="md-typography--headline">
+                    Circle determinate
+                </div>
+                <button onclick="show('#progress-5')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Show
+                </button>
+                <button onclick="increaseBuffer('#progress-5')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Increase Buffer
+                </button>
+                <button onclick="hide('#progress-5')" class="layout-m-t-3 layout-m-b-3 md-button md-button--primary md-button--raised">
+                    Hide
+                </button>
+                <div style="position: fixed" class="md-progress" data-circle="true" data-integration="true" data-overlay="false" data-center="true" data-fixed="true" data-parent="true" data-target="#fab-button" id="progress-5">
                 </div>
             </div>
         </div>
     </div>
 </section>
+<button class="md-button md-button--raised md-button--primary is-fixed md-button--fab" id="fab-button">
+    <i class="material-icons">cloud_upload</i>
+</button>
 
 <script src="js/jquery.js"></script>
 <script src="../resources/assets/js/progress.js"></script>
@@ -156,6 +175,22 @@
         m = 0
         $(el).MaterialProgress('hide');
     }
+
+    /*var svgParent = document.querySelector('#parent-5 .md-progress-circle__path');
+    var SVG = document.querySelector('#parent-5 .md-progress-circle');
+
+    var m = 166
+    $(document).ready(function(){
+        svgParent.style.strokeDasharray = m;
+    })
+
+    $('#range').on('input', function(){
+        var l = Math.min(260,(360*$(this).val()/100))
+        console.log("rotate("+ l +"deg)")
+        SVG.style.transform = "rotate("+l+"deg)"
+        svgParent.style.strokeDashoffset = m - ($(this).val()*m/100)
+        // svgParent.setAttribute('stroke-width', $(this).val()/10)
+    });*/
 </script>
 <style>
     .default-body{

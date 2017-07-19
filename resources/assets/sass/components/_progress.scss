@@ -66,6 +66,17 @@
       animation-iteration-count: infinite;
       animation-timing-function: linear;
     }
+    .md-progress-circle__path{
+      animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+    }
+    .md-progress-circle{
+      animation: rotator 1.4s linear infinite;
+    }
+    .md-progress-circle--primary{
+      .md-progress-circle__path{
+        animation: dash 1.4s ease-in-out infinite;
+      }
+    }
   }
 
   &--buffer{
@@ -119,6 +130,7 @@
 
   &--overlay{
     height: 100%;
+    cursor: wait;
   }
 
   &--visible{
@@ -126,6 +138,74 @@
   }
 }
 
+.md-progress-circle {
+  &__path{
+    stroke-dasharray: 187;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    stroke: unquote("rgb(#{$color-accent})");
+  }
+
+  &--primary{
+    .md-progress-circle__path{
+      stroke: unquote("rgb(#{$color-primary})");
+    }
+  }
+}
+
+.md-progress:not(.md-progress--indeterminate){
+  .md-progress-circle__path{
+    transition: stroke-dashoffset .2s linear;
+  }
+  .md-progress-circle{
+    transition: transform 0.2s linear;
+  }
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+@keyframes colors {
+  0% {
+    stroke: red;
+  }
+  14.285714286% {
+    stroke: orange;
+  }
+  28.571428572% {
+    stroke: yellow;
+  }
+  42.857142858% {
+    stroke: green;
+  }
+  57.142857144% {
+    stroke: blue;
+  }
+  71.42857143% {
+    stroke: indigo;
+  }
+  100% {
+    stroke: violet;
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
+}
 @keyframes indeterminate1 {
   0% {
     left: 0;

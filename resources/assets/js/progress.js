@@ -35,7 +35,11 @@
       PARENT_OVERLAY: 'layout-block--overlay',
       PARENT_CENTER: 'layout-block--center',
       PARENT_VISIBLE: 'layout-block--visible',
-      PARENT_FIXED: 'layout-block--fixed'
+      PARENT_FIXED: 'layout-block--fixed',
+      CIRCLE_SVG: 'md-progress-circle',
+      CIRCLE_PATH: 'md-progress-circle__path',
+      CIRCLE_PRIMARY_THEME: 'md-progress-circle--primary',
+      INTEGRATION: 'md-progress--integration'
     }
 
     MaterialProgress.prototype.init_ = function (config) {
@@ -48,13 +52,27 @@
         bufferbar.addClass(this.Classes_.BUFFER_BAR).appendTo(this.$progress.get(0))
         this.$bufferBar = this.$progress.find('.'+this.Classes_.BUFFER_BAR)
       }else{
-        let circleSvg = '<svg class="md-loader-spinner md-loader-spinner--primary" width="55px" height="55px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">'+
-            '<circle class="md-loader-spinner__path" fill="none" stroke-width="4" stroke-linecap="round" cx="28" cy="28" r="26"></circle>'+
-            '</svg>';
+        let id = 'progress-circle-'+Math.floor(Math.random()*100)
+        let circleSvg = this.getSvg_(id)
         this.$progress.get(0).innerHTML = circleSvg;
         this.$progress.addClass(this.Classes_.IS_CIRCLE)
+        this.circle = document.querySelector('#'+id)
+        this.circlePath = document.querySelector('#'+id+' .'+this.Classes_.CIRCLE_PATH)
+        this.circlePath.style.strokeDasharray = this.strokeDasharray
+        this.circlePath.style.strokeDashoffset = this.strokeDashoffset
+        switch (this.config.theme){
+          case 'primary':
+              this.circle.setAttribute("class", this.Classes_.CIRCLE_SVG+' '+this.Classes_.CIRCLE_PRIMARY_THEME)
+            break;
+          default:
+            break;
+        }
+        if(this.config.integration){
+          this.setIntegration_()
+        }
       }
       this.setProgressType_()
+      if(!(this.config.circle && this.config.integration))
       this.setParent_()
     }
 
@@ -66,7 +84,29 @@
       overlay: false,
       parent: false,
       center: false,
-      fixed: false
+      fixed: false,
+      theme: 'default',
+      integration: false
+    }
+
+    MaterialProgress.prototype.setIntegration_ = function (){
+      if(this.config.parent){
+        let parentTarget = $(this.config.target)
+        if(parentTarget.length){
+          this.$parentTarget = parentTarget
+          this.$progress.addClass(this.Classes_.INTEGRATION)
+          let rect = this.$parentTarget.get(0).getBoundingClientRect()
+          this.$progress.css('top', Math.floor(rect.top))
+          if(this.adjustPosition !== undefined && this.adjustPosition){
+            this.$progress.css('left', (rect.left - .5))
+          }else{
+            this.$progress.css('left', (rect.left))
+          }
+          this.$progress.css('z-index', 21)
+          this.$progress.css('margin-top', '-4px')
+          this.$progress.css('margin-left', '-4px')
+        }
+      }
     }
 
     MaterialProgress.prototype.setProgressType_ = function(){
@@ -103,7 +143,11 @@
       if(this.config.type == 'indeterminate')
           return ;
       if(!isNaN(val) && val >= 0){
-        this.$progressBar.css('width', Math.min(val, 100)+'%');
+        if(!this.config.circle){
+          this.$progressBar.css('width', Math.min(val, 100)+'%');
+        }else{
+          this.setCircleBuffer_(Math.min(val, 100));
+        }
       }else{
         throw new Error('invalid value');
         return ;
@@ -112,7 +156,7 @@
     MaterialProgress.prototype['setProgressBar'] = MaterialProgress.prototype.setProgressBar
 
     MaterialProgress.prototype.setBufferBar = function(val){
-      if(this.config.type != 'buffer')
+      if(this.config.type != 'buffer' || this.config.circle)
         return ;
       if(!isNaN(val) && val >= 0 && val<=100){
         this.$bufferBar.css('width', Math.min(val, 100)+'%');
@@ -122,6 +166,15 @@
       }
     }
     MaterialProgress.prototype['setBufferBar'] = MaterialProgress.prototype.setBufferBar
+
+    MaterialProgress.prototype.setCircleBuffer_ = function(r){
+      let m = 166;
+      let t = Math.min(260,(360*r/100))
+      console.log(t)
+      console.log(this.circle)
+      this.circle.style.transform = "rotate("+t+"deg)"
+      this.circlePath.style.strokeDashoffset = m - (r*m/100)
+    }
 
     MaterialProgress.prototype.setParent_ = function () {
       if(this.config.parent){
@@ -175,11 +228,44 @@
     }
     MaterialProgress.prototype['toggle'] = MaterialProgress.prototype.toggle
 
+
     MaterialProgress.prototype.reset = function () {
       this.$progressBar.css('width','')
       if(this.buffer){
         this.$bufferBar.css('width','')
       }
+    }
+
+    MaterialProgress.prototype.getSvg_ = function (id){
+
+      let svgWidth = 55,svgCy = 28, svrR = 26,svgViewBox = 56
+      this.strokeDasharray = 166
+      this.strokeDashoffset = 166
+
+      if(this.config.parent){
+        let parentTarget = $(this.config.target)
+        if(parentTarget.length){
+          this.$parentTarget = parentTarget
+          let rect = this.$parentTarget.get(0).getBoundingClientRect()
+          svgWidth = Math.ceil(rect.width)+8
+          if(svgWidth%2 == 0){
+            svgWidth++
+            this.adjustPosition = true
+          }
+          svgViewBox = svgWidth+1
+          svgCy = svgViewBox/2
+          svrR = svgCy-2
+          this.strokeDasharray = Math.floor(2*Math.PI*svrR)
+          this.strokeDashoffset = this.strokeDasharray
+        }
+      }
+
+      let circleSvg = '<svg id="'+id+'" class="md-progress-circle" width="'+svgWidth+'px" height="'+svgWidth+'px" viewBox="0 0 '+svgViewBox+' '+svgViewBox+'" xmlns="http://www.w3.org/2000/svg">'+
+          '<circle class="md-progress-circle__path" fill="none" stroke-width="4" stroke-linecap="round" cx="'+svgCy+'" cy="'+svgCy+'" r="'+svrR+'"></circle>'+
+          '</svg>';
+
+      return circleSvg;
+
     }
 
     MaterialProgress.prototype.destroy = function () {
